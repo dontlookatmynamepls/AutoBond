@@ -1,0 +1,169 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Dead Rails || Flandre Hub",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "Welcome To Flandre Hub",
+   LoadingSubtitle = "by 54hz",
+   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "Big Hub"
+   },
+
+   Discord = {
+      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local Tab = Window:CreateTab("Tab Example", 4483362458) -- Title, Image
+
+local Divider = Tab:CreateDivider()
+
+local Button = Tab:CreateButton({
+   Name = "dịch chuyển,gạt cần(spam nút này)",
+   Callback = function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Đợi nhân vật tải xong
+if not character:IsDescendantOf(workspace) then
+    character.AncestryChanged:Wait()
+end
+
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+-- **Bước 1: Teleport đến Bridge**
+local bridgePosition = CFrame.new(-346, -69, -49060)
+humanoidRootPart.Parent:PivotTo(bridgePosition)
+print("Đã dịch chuyển đến cầu.")
+
+-- **Bước 2: Teleport đến Switch**
+task.wait(1) -- Chờ 1 giây trước khi di chuyển đến Switch
+local switchPosition = CFrame.new(-351.308, 1.25, -49048)
+humanoidRootPart.Parent:PivotTo(switchPosition)
+print("Đã dịch chuyển đến công tắc.")
+
+-- **Bước 3: Kích hoạt tất cả ProximityPrompt gần đó sau 0.5 giây**
+task.wait(0.5)
+
+local activationRadius = 10 -- Khoảng cách tối đa để tìm ProximityPrompt (có thể chỉnh)
+local nearbyPrompts = {}
+
+for _, obj in ipairs(workspace:GetDescendants()) do
+    if obj:IsA("ProximityPrompt") then
+        local parentPart = obj.Parent
+        if parentPart and parentPart:IsA("BasePart") then
+            local distance = (parentPart.Position - humanoidRootPart.Position).magnitude
+            if distance <= activationRadius then
+                table.insert(nearbyPrompts, obj)
+            end
+        end
+    end
+end
+
+-- Kích hoạt tất cả các ProximityPrompt tìm thấy
+if #nearbyPrompts > 0 then
+    for _, prompt in ipairs(nearbyPrompts) do
+        fireproximityprompt(prompt)
+    end
+    print("Đã kích hoạt tất cả ProximityPrompt gần đó!")
+else
+    warn("Không tìm thấy ProximityPrompt nào trong phạm vi!")
+end
+
+-- **Bước 4: Gửi thông báo cho người chơi**
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Thông báo",
+    Text = "Đợi 10 phút để kích hoạt cầu!",
+    Duration = 5 -- Hiển thị trong 5 giây
+})
+
+   -- The function that takes place when the button is pressed
+   end,
+})
+
+local Toggle = Tab:CreateToggle({
+   Name = "Noclip(dùng để đi vào tường,tránh bị bắn)",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+getgenv().Clip = Value 
+ wait(0.1) 
+ local function NoclipLoop() 
+ if Clip == true and game.Players.LocalPlayer.Character ~= nil then 
+ for _, c in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do 
+                                 if c:IsA("BasePart") and c.CanCollide == true and c.Name ~= floatName then 
+ c.CanCollide = false 
+ end 
+ end 
+ end 
+ end 
+ Noclipping = game:GetService("RunService").Stepped:Connect(NoclipLoop) 
+
+ if not getgenv().Clip then Noclipping:Disconnect() end
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
+local Section = Tab:CreateSection("script làm bởi 54hz")
+
+local Section = Tab:CreateSection("tiktok:@flandrescript")
+
+local Section = Tab:CreateSection("lưu ý: 10p sau game mới cho gạt cần")
+
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- Tạo Frame nhỏ gọn
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 100, 0, 30) -- Giảm kích thước
+frame.Position = UDim2.new(0.9, -110, 0.05, 0) -- Đặt ở góc trên phải
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Nền đen
+frame.BorderSizePixel = 2
+frame.BorderColor3 = Color3.fromRGB(255, 105, 180) -- Viền hồng
+frame.Parent = gui
+
+-- Tạo TextLabel hiển thị thời gian
+local timerLabel = Instance.new("TextLabel")
+timerLabel.Size = UDim2.new(1, 0, 1, 0)
+timerLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Chữ trắng
+timerLabel.TextScaled = true
+timerLabel.BackgroundTransparency = 1
+timerLabel.Font = Enum.Font.SourceSansBold
+timerLabel.Text = "10:00" -- Ban đầu hiển thị 10:00
+timerLabel.Parent = frame
+
+-- **Bắt đầu đếm ngược 10 phút**
+local countdown = 10 * 60 -- 10 phút (600 giây)
+
+while countdown >= 0 do
+    local minutes = math.floor(countdown / 60)
+    local seconds = countdown % 60
+    timerLabel.Text = string.format("%02d:%02d", minutes, seconds) -- Hiển thị MM:SS
+    task.wait(1) -- Giảm mỗi giây
+    countdown = countdown - 1
+end
+
+-- Khi hết thời gian, hiển thị "00:00"
+timerLabel.Text = "00:00"
